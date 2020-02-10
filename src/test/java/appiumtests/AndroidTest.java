@@ -2,8 +2,6 @@ package appiumtests;
 
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
-import io.appium.java_client.android.nativekey.AndroidKey;
-import io.appium.java_client.android.nativekey.KeyEvent;
 import io.appium.java_client.remote.MobileCapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.annotations.AfterClass;
@@ -12,6 +10,7 @@ import org.testng.annotations.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 import static org.testng.Assert.assertEquals;
 
@@ -36,8 +35,10 @@ public class AndroidTest {
     }
 
     @Test
-    public void testScreen() throws InterruptedException {
+    public void testScreen() {
         System.out.println("Application started");
+
+        //Check screen 1 components
         assertEquals(".MainActivity", driver.currentActivity());
 
         MobileElement title = driver.findElementById("welcome");
@@ -47,8 +48,10 @@ public class AndroidTest {
         assertEquals("ENTER", enter.getText());
         enter.click();
 
-        driver.pressKey(new KeyEvent(AndroidKey.BACK));
+        // Wait :)
+        driver.manage().timeouts().implicitlyWait(30, TimeUnit.SECONDS);
 
+        //Check screen 2 components
         assertEquals(".Main2Activity", driver.currentActivity());
 
         MobileElement button1 = driver.findElementById("button1");
@@ -66,6 +69,7 @@ public class AndroidTest {
         MobileElement buttonEquals = driver.findElementById("equals");
         assertEquals("=", buttonEquals.getText());
 
+        // Valid data scenario
         button1.click();
         button2.click();
         buttonPlus.click();
@@ -78,6 +82,23 @@ public class AndroidTest {
 
         MobileElement result = driver.findElementById("result");
         assertEquals("37", result.getText());
+
+        // Clear data
+        MobileElement clear = driver.findElementById("clear");
+        assertEquals("C", clear.getText());
+        clear.click();
+
+        // Invalid data scenario
+        buttonPlus.click();
+        button1.click();
+        buttonEquals.click();
+
+        assertEquals("+1", expression.getText());
+        assertEquals("Invalid expression", result.getText());
+
+        // Navigate back
+        driver.navigate().back();
+        assertEquals(".MainActivity", driver.currentActivity());
 
     }
 
