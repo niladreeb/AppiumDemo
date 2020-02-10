@@ -28,8 +28,8 @@ public class AndroidTest {
         cap.setCapability(MobileCapabilityType.PLATFORM_NAME, "Android");
         cap.setCapability(MobileCapabilityType.PLATFORM_VERSION, "8.1.0");
 
-        cap.setCapability("appPackage", "my.test.app");
-        cap.setCapability("appActivity", "my.test.app.features.splash.SplashActivity");
+        cap.setCapability("appPackage", "com.demo.appiumdemo");
+        cap.setCapability("appActivity", "com.demo.appiumdemo.MainActivity");
         cap.setCapability(MobileCapabilityType.NO_RESET, true);
 
         driver = new AndroidDriver<MobileElement>(url, cap);
@@ -38,43 +38,47 @@ public class AndroidTest {
     @Test
     public void testScreen() throws InterruptedException {
         System.out.println("Application started");
-        assertEquals("my.test.app.features.welcome.WelcomeActivity", driver.currentActivity());
+        assertEquals(".MainActivity", driver.currentActivity());
 
-        MobileElement title = driver.findElementById("welcomeTitle");
-        assertEquals(title.getText(), "Welcome to appium demo app");
+        MobileElement title = driver.findElementById("welcome");
+        assertEquals(title.getText(), "Welcome to\nAppium Demo app");
 
-        MobileElement subTitle = driver.findElementById("welcomeSubtitle");
-        assertEquals(subTitle.getText(), "Test your appium skills here");
-
-        MobileElement login = driver.findElementById("button1");
-        assertEquals("Click me", login.getText());
-        login.click();
+        MobileElement enter = driver.findElementById("enter");
+        assertEquals("ENTER", enter.getText());
+        enter.click();
 
         driver.pressKey(new KeyEvent(AndroidKey.BACK));
-        driver.pressKey(new KeyEvent(AndroidKey.BACK));
 
-        assertEquals("my.test.app.features.main.MainActivity", driver.currentActivity());
+        assertEquals(".Main2Activity", driver.currentActivity());
 
-        driver.pressKey(new KeyEvent(AndroidKey.BACK));
-        driver.pressKey(new KeyEvent(AndroidKey.BACK));
+        MobileElement button1 = driver.findElementById("button1");
+        assertEquals("1", button1.getText());
 
-        MobileElement register = driver.findElementById("button2");
-        assertEquals("I'm clickable", register.getText());
-        register.click();
+        MobileElement buttonPlus = driver.findElementById("plus");
+        assertEquals("+", buttonPlus.getText());
 
-        driver.pressKey(new KeyEvent(AndroidKey.BACK));
-        assertEquals("my.test.app.features.main.SomeActivity", driver.currentActivity());
-        driver.pressKey(new KeyEvent(AndroidKey.BACK));
+        MobileElement button2 = driver.findElementById("button2");
+        assertEquals("2", button2.getText());
 
-        MobileElement forgotPassword = driver.findElementById("button3");
-        assertEquals("Test", forgotPassword.getText());
-        forgotPassword.click();
+        MobileElement button5 = driver.findElementById("button5");
+        assertEquals("5", button5.getText());
 
-        driver.pressKey(new KeyEvent(AndroidKey.BACK));
-        assertEquals("my.test.app.features.test.TestActivity", driver.currentActivity());
-        driver.pressKey(new KeyEvent(AndroidKey.BACK));
+        MobileElement buttonEquals = driver.findElementById("equals");
+        assertEquals("=", buttonEquals.getText());
 
-        assertEquals("my.test.app.features.welcome.WelcomeActivity", driver.currentActivity());
+        button1.click();
+        button2.click();
+        buttonPlus.click();
+        button2.click();
+        button5.click();
+        buttonEquals.click();
+
+        MobileElement expression = driver.findElementById("expression");
+        assertEquals("12+25", expression.getText());
+
+        MobileElement result = driver.findElementById("result");
+        assertEquals("37", result.getText());
+
     }
 
     @AfterClass
