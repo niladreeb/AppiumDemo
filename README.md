@@ -5,7 +5,7 @@ Demo Appium test suite for Android
 
 1. Install appium
 
-`npm install -g appium`
+    `npm install -g appium`
 
 2. Install Android Studio and create an emulator
 3. Copy the test app .apk file in the emulator or run the test project
